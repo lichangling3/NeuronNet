@@ -129,7 +129,7 @@ void Network::print_traj(const int time, const std::map<std::string, size_t> &_n
     (*_out) << std::endl;
 }
 
-std::set<size_t> Network::step(std::__1::vector<double, std::__1::allocator<double> > const&) {
+std::pair<size_t, double> Network::degree(const size_t&) const {
 
 }
 

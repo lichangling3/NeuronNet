@@ -66,7 +66,8 @@ public:
  */
     bool add_link(const size_t&, const size_t&, double);
 /*! 
-  Creates random links in the network. Each neuron will expect to receive *n* connections (RandomNumbers::poisson with mean \p mean_deg) of intensity *s* (RandomNumbers::uniform_double with mean \p mean_streng).
+  Creates random links in the network. Each neuron will expect to receive *n* connections (RandomNumbers::poisson with mean \p mean_deg) 
+  of intensity *s* (RandomNumbers::uniform_double with mean \p mean_streng).
   Sending neurons will be picked at random and since there can be only one connection from each neuron, the expected degree is not always achieved.
   \param mean_deg (double): mean value of Poisson distribution.
   \param mean_streng (double): mean value of the uniform distribution (with bounds 0 and 2*mean_streng).

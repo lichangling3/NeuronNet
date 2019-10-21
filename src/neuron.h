@@ -24,8 +24,8 @@ public:
     void set_default_params(const std::string&, double n=0);
     bool is_type(const std::string&);
     std::string type() {return _type->first;}
-    bool is_inhibitory() const {return params.inhib;}
-    void set_inhibitory() {params.inhib=true;}
+    bool is_inhibitory() const {return params.inhib;} 
+    void set_inhibitory() {params.inhib=true;} 
 /*!
   A neuron is firing if its membrane potential exceeds the firing threshold \ref firing_thresh
  */

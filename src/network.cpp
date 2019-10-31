@@ -129,14 +129,65 @@ void Network::print_traj(const int time, const std::map<std::string, size_t> &_n
     (*_out) << std::endl;
 }
 
-std::pair<size_t, double> Network::degree(const size_t&) const {
+std::pair<size_t, double> Network::degree(const size_t& n) const {
 
+    size_t number = neighbors(n).size();
+    double sum = 0;
+    
+    for (auto& connection : neighbors(n)) {
+        sum = sum + connection.second;
+    }
+
+    std::pair<size_t, double> degree (number, sum);
+
+    return degree;
 }
 
-std::set<size_t> Network::step(const std::vector<double>&) {
+std::set<size_t> Network::step(const std::vector<double>& J) {
 
+    std::set<size_t> firing_neurons;
+
+    for (size_t i(0); i < neurons.size(); ++i) {
+
+        double w = 1;
+        double sum = 0;
+        double intensity = 0;
+
+        if (neurons[i].is_inhibitory()) {
+            w = 0.4;
+        }
+
+        if (neurons[i].firing()) {
+            firing_neurons.insert(i);
+            neurons[i].reset();
+        }
+
+        for (auto& connection : neighbors(i)) {
+            if (neurons[connection.first].firing()) {
+                sum += connection.second;
+            }
+        }
+
+        intensity = w*J[i] + 0.5*sum;
+        neurons[i].input(intensity);
+        neurons[i].step();
+    }
+    return firing_neurons;
 }
 
-std::vector<std::pair<size_t, double> > Network::neighbors(const size_t&) const {
+std::vector<std::pair<size_t, double> > Network::neighbors(const size_t& n) const {
 
+    std::vector<std::pair<size_t, double> > neurons_connected;
+    std::map<std::pair<size_t, size_t>, double>::const_iterator it;
+
+    for (it = links.cbegin(); it != links.cend(); it++ ) {
+        if ( (it->first).first == n) {
+            std::pair<size_t, double> connection ((it->first).second, it->second);
+            neurons_connected.push_back(connection);
+        } else if ((it->first).second == n) {
+            std::pair<size_t, double> connection ((it->first).first, it->second);
+            neurons_connected.push_back(connection);
+        }
+    }
+    return neurons_connected;
 }

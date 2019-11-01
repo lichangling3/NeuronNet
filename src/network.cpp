@@ -139,7 +139,6 @@ std::pair<size_t, double> Network::degree(const size_t& n) const {
     }
 
     std::pair<size_t, double> degree (number, sum);
-
     return degree;
 }
 
@@ -180,14 +179,9 @@ std::vector<std::pair<size_t, double> > Network::neighbors(const size_t& n) cons
     std::vector<std::pair<size_t, double> > neurons_connected;
     std::map<std::pair<size_t, size_t>, double>::const_iterator it;
 
-    for (it = links.cbegin(); it != links.cend(); it++ ) {
-        if ( (it->first).first == n) {
-            std::pair<size_t, double> connection ((it->first).second, it->second);
-            neurons_connected.push_back(connection);
-        } else if ((it->first).second == n) {
-            std::pair<size_t, double> connection ((it->first).first, it->second);
-            neurons_connected.push_back(connection);
-        }
-    }
+    for (it=links.lower_bound({n,0}); it!=links.end() and ((it->first).first ==n) ; ++it) {
+		std::pair<size_t, double> connection((it->first).second, it->second);
+		neurons_connected.push_back(connection);
+	}
     return neurons_connected;
 }
